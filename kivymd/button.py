@@ -153,7 +153,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
         self._md_bg_color_down = value
 
     md_bg_color_down = AliasProperty(_call_get_bg_color_down,
-                                          _set_md_bg_color_down)
+                                     _set_md_bg_color_down)
 
     def _call_get_bg_color_disabled(self):
         return self._get_md_bg_color_disabled()
@@ -168,14 +168,14 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
         self._md_bg_color_disabled = value
 
     md_bg_color_disabled = AliasProperty(_call_get_bg_color_disabled,
-                                              _set_md_bg_color_disabled)
+                                         _set_md_bg_color_disabled)
 
     def on_disabled(self, instance, value):
-        if value:
+        if self.disabled:
             self._current_button_color = self.md_bg_color_disabled
         else:
             self._current_button_color = self.md_bg_color
-        super(BaseButton, self).on_disabled(instance, value)
+        # super(BaseButton, self).on_disabled(instance, value)
 
 
 class BasePressedButton(BaseButton):
@@ -183,6 +183,7 @@ class BasePressedButton(BaseButton):
     Abstract base class for those button which fade to a background color on
     press.
     '''
+
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
             return False
@@ -194,7 +195,7 @@ class BasePressedButton(BaseButton):
             return False
         else:
             self.fade_bg = Animation(duration=.5,
-                    _current_button_color=self.md_bg_color_down)
+                                     _current_button_color=self.md_bg_color_down)
             self.fade_bg.start(self)
             return super(BaseButton, self).on_touch_down(touch)
 
@@ -247,6 +248,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
     Implements elevation behavior as well as the recommended down/disabled
     colors for raised buttons.
     '''
+
     def __init__(self, **kwargs):
         if self.elevation_raised == 0 and self.elevation_normal + 6 <= 12:
             self.elevation_raised = self.elevation_normal + 6
@@ -292,7 +294,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         else:
             self.elevation = self.elevation_normal
         super(BaseRaisedButton, self).on_disabled(instance, value)
-    
+
     def on_touch_down(self, touch):
         if not self.disabled:
             if touch.is_mouse_scrolling:
