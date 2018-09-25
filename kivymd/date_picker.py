@@ -186,7 +186,8 @@ class DaySelector(ThemableBehavior, AnchorLayout):
     def move_resize(self, window=None, width=None, height=None, do_again=True):
         self.pos = self.selected_widget.pos
         if do_again:
-            Clock.schedule_once(lambda x: self.move_resize(do_again=False), 0.01)
+            Clock.schedule_once(
+                lambda x: self.move_resize(do_again=False), 0.01)
 
 
 class DayButton(ThemableBehavior, CircularRippleBehavior, ButtonBehavior,
@@ -256,9 +257,11 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
         except Exception as e:
             print(e)
             if str(e) == "day is out of range for month":
-                raise self.SetDateError(" Day %s day is out of range for month %s" % (day, month))
+                raise self.SetDateError(
+                    " Day %s day is out of range for month %s" % (day, month))
             elif str(e) == "month must be in 1..12":
-                raise self.SetDateError("Month must be between 1 and 12, got %s" % month)
+                raise self.SetDateError(
+                    "Month must be between 1 and 12, got %s" % month)
             elif str(e) == "year is out of range":
                 raise self.SetDateError("Year must be between %s and %s, got %s" %
                                         (datetime.MINYEAR, datetime.MAXYEAR, year))
@@ -315,8 +318,11 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
 
     def generate_cal_widgets(self):
         cal_list = []
-        for i in calendar.day_abbr:
-            self.cal_layout.add_widget(WeekdayLabel(text=i[0].upper()))
+        for day in self.cal.iterweekdays():
+            # for i in calendar.day_abbr:
+            # [
+            self.cal_layout.add_widget(WeekdayLabel(
+                text=calendar.day_abbr[day][0].upper()))
         for i in range(6 * 7):  # 6 weeks, 7 days a week
             db = DayButton(owner=self)
             cal_list.append(db)
